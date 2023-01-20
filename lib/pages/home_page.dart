@@ -18,8 +18,15 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocListener<Counter, int>(
+          // Gabungan dari BlocListener dengan BlocBuilder
+          BlocConsumer(
             bloc: myCounter,
+            builder: (context, state) {
+              return Text(
+                '$state',
+                style: const TextStyle(fontSize: 30),
+              );
+            },
             listener: (context, state) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -28,7 +35,6 @@ class HomePage extends StatelessWidget {
                 ),
               );
             },
-            // snackbar muncul ketika nilai == 10
             listenWhen: (previous, current) {
               if (current == 10) {
                 return true;
@@ -36,17 +42,6 @@ class HomePage extends StatelessWidget {
                 return false;
               }
             },
-            child: BlocBuilder<Counter, int>(
-              bloc: myCounter,
-              builder: (context, state) {
-                return Text(
-                  '$state',
-                  style: const TextStyle(
-                    fontSize: 30,
-                  ),
-                );
-              },
-            ),
           ),
           const SizedBox(
             height: 20,
