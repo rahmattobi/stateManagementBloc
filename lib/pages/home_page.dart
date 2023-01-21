@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Counter myCounter = Counter();
+    Counter myCounter = BlocProvider.of<Counter>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,29 +18,13 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Gabungan dari BlocListener dengan BlocBuilder
-          BlocConsumer(
+          BlocBuilder(
             bloc: myCounter,
             builder: (context, state) {
               return Text(
                 '$state',
                 style: const TextStyle(fontSize: 30),
               );
-            },
-            listener: (context, state) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  duration: Duration(seconds: 1),
-                  content: Text("HAI BROOO"),
-                ),
-              );
-            },
-            listenWhen: (previous, current) {
-              if (current == 10) {
-                return true;
-              } else {
-                return false;
-              }
             },
           ),
           const SizedBox(
