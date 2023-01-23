@@ -9,10 +9,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeBloc myTheme = context.read<ThemeBloc>();
-
     return BlocBuilder<ThemeBloc, bool>(
-      bloc: myTheme,
+      bloc: context.read<ThemeBloc>(),
       builder: (context, state) {
         return MaterialApp(
           theme: state == true ? ThemeData.light() : ThemeData.dark(),

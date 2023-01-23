@@ -9,8 +9,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var myCounter = context.read<Counter>();
-    var myThemes = context.read<ThemeBloc>();
+    Counter myCounter = context.read<Counter>();
+    ThemeBloc myThemes = context.read<ThemeBloc>();
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +55,9 @@ class HomePage extends StatelessWidget {
         onPressed: () {
           myThemes.changeTheme();
         },
-        child: const Icon(Icons.dark_mode),
+        child: myThemes.state == true
+            ? const Icon(Icons.dark_mode)
+            : const Icon(Icons.light_mode),
       ),
     );
   }
