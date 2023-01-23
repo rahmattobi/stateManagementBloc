@@ -1,3 +1,4 @@
+import 'package:belajar_bloc/bloc/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Counter myCounter = BlocProvider.of<Counter>(context);
+    var myCounter = context.read<Counter>();
+    var myThemes = context.read<ThemeBloc>();
 
     return Scaffold(
       appBar: AppBar(
@@ -48,6 +50,12 @@ class HomePage extends StatelessWidget {
             ],
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          myThemes.changeTheme();
+        },
+        child: const Icon(Icons.dark_mode),
       ),
     );
   }
