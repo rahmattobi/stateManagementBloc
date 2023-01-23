@@ -1,5 +1,6 @@
 import 'package:belajar_bloc/bloc/counter.dart';
 import 'package:belajar_bloc/bloc/theme.dart';
+import 'package:belajar_bloc/bloc/user.dart';
 import 'package:belajar_bloc/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ThemeBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc(),
         ),
       ],
       child: const MainPage(),
