@@ -20,14 +20,52 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder(
-            bloc: myCounter,
-            builder: (context, state) {
-              return Text(
-                '$state',
-                style: const TextStyle(fontSize: 30),
-              );
-            },
+          MultiBlocListener(
+            listeners: [
+              BlocListener<Counter, int>(
+                listener: (context, state) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(seconds: 1),
+                      content: Text("Kamu melewati angka 10"),
+                    ),
+                  );
+                },
+                listenWhen: (previous, current) {
+                  if (current == 10) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                },
+              ),
+              BlocListener<ThemeBloc, bool>(
+                listener: (context, state) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(seconds: 1),
+                      content: Text("Dark Mode Aktif"),
+                    ),
+                  );
+                },
+                listenWhen: (previous, current) {
+                  if (current == false) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                },
+              )
+            ],
+            child: BlocBuilder(
+              bloc: myCounter,
+              builder: (context, state) {
+                return Text(
+                  '$state',
+                  style: const TextStyle(fontSize: 30),
+                );
+              },
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -51,14 +89,15 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          myThemes.changeTheme();
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        myThemes.changeTheme();
+      }, child: BlocBuilder<ThemeBloc, bool>(
+        builder: (context, state) {
+          return myThemes.state == true
+              ? const Icon(Icons.dark_mode)
+              : const Icon(Icons.light_mode);
         },
-        child: myThemes.state == true
-            ? const Icon(Icons.dark_mode)
-            : const Icon(Icons.light_mode),
-      ),
+      )),
     );
   }
 }
