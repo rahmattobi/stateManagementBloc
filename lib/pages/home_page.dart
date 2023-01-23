@@ -1,5 +1,4 @@
 import 'package:belajar_bloc/bloc/theme.dart';
-import 'package:belajar_bloc/bloc/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +11,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Counter myCounter = context.read<Counter>();
     ThemeBloc myThemes = context.read<ThemeBloc>();
-    UserBloc myUser = context.read<UserBloc>();
+    // UserBloc myUser = context.watch<UserBloc>();
+    //.read -> Hanya membaca 1x
+    //.select -> membaca berkali2 ketika state berubah2 dan tidak menggunakan blocbuilder tetapi hanya builder biasa
+    //.watch -> membuild layout secara realtime tampa harus menambahkan block builder,
+    //tetapi dia membuild semua layout seperti set state dan tidak efektif
 
     return Scaffold(
       appBar: AppBar(
@@ -79,14 +82,12 @@ class HomePage extends StatelessWidget {
                 icon: const Icon(Icons.remove),
                 onPressed: () {
                   myCounter.decrement();
-                  myUser.changeAge(myUser.state["umur"] - 1);
                 },
               ),
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
                   myCounter.increment();
-                  myUser.changeAge(myUser.state["umur"] + 1);
                 },
               ),
             ],
@@ -95,41 +96,41 @@ class HomePage extends StatelessWidget {
             height: 30,
           ),
 
-          // Bloc Selector
-          // untuk membuild widget yg di perlukan saja tampa membuild smuanyaa untuk menghemat penggunaaan memori
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TextField(
-              onChanged: (value) => myUser.changeName(value),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          // dijadikan block selector karena hanya di reload ketika di pakai
-          BlocSelector<UserBloc, Map<String, dynamic>, String>(
-            selector: (state) => state['nama'],
-            builder: (context, state) {
-              print('tes');
+          // // Bloc Selector
+          // // untuk membuild widget yg di perlukan saja tampa membuild smuanyaa untuk menghemat penggunaaan memori
+          // Padding(
+          //   padding: const EdgeInsets.all(20.0),
+          //   child: TextField(
+          //     onChanged: (value) => myUser.changeName(value),
+          //     decoration: const InputDecoration(
+          //       border: OutlineInputBorder(),
+          //     ),
+          //   ),
+          // ),
+          // // dijadikan block selector karena hanya di reload ketika di pakai
+          // BlocSelector<UserBloc, Map<String, dynamic>, String>(
+          //   selector: (state) => state['nama'],
+          //   builder: (context, state) {
+          //     print('tes');
 
-              return Text(
-                'Nama : $state',
-                style: const TextStyle(fontSize: 20),
-              );
-            },
-          ),
+          //     return Text(
+          //       'Nama : $state',
+          //       style: const TextStyle(fontSize: 20),
+          //     );
+          //   },
+          // ),
 
-          BlocSelector<UserBloc, Map<String, dynamic>, int>(
-            selector: (state) => state['umur'],
-            builder: (context, state) {
-              print('tes2');
+          // BlocSelector<UserBloc, Map<String, dynamic>, int>(
+          //   selector: (state) => state['umur'],
+          //   builder: (context, state) {
+          //     print('tes2');
 
-              return Text(
-                'Umur : $state',
-                style: const TextStyle(fontSize: 20),
-              );
-            },
-          ),
+          //     return Text(
+          //       'Umur : $state',
+          //       style: const TextStyle(fontSize: 20),
+          //     );
+          //   },
+          // ),
         ],
       ),
       floatingActionButton: FloatingActionButton(onPressed: () {
